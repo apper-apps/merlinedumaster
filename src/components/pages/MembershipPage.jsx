@@ -53,10 +53,10 @@ const MembershipPage = () => {
     setIsUploadModalOpen(true)
   }
 
-  const handleUploadModalClose = () => {
+const handleUploadModalClose = () => {
     setIsUploadModalOpen(false)
     setEditingCourse(null)
-    loadCourses() // Refresh the list
+    loadCourses() // Refresh the list properly
   }
 
   if (loading) {

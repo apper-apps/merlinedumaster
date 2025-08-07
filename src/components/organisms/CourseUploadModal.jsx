@@ -9,33 +9,33 @@ import Checkbox from "@/components/atoms/Checkbox"
 import coursesService from "@/services/api/coursesService"
 
 const CourseUploadModal = ({ isOpen, onClose, courseType, editingCourse = null }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    thumbnailUrl: "",
-    allowedRoles: ["free"],
-    isPinned: false,
+const [formData, setFormData] = useState({
+    title_c: "",
+    description_c: "",
+    thumbnail_url_c: "",
+    allowed_roles_c: ["free"],
+    is_pinned_c: false,
     curriculum: [{ title: "", url: "" }]
   })
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (editingCourse) {
-      setFormData({
-        title: editingCourse.title || "",
-        description: editingCourse.description || "",
-        thumbnailUrl: editingCourse.thumbnailUrl || "",
-        allowedRoles: editingCourse.allowedRoles || ["free"],
-        isPinned: editingCourse.isPinned || false,
+setFormData({
+        title_c: editingCourse.title_c || editingCourse.title || "",
+        description_c: editingCourse.description_c || editingCourse.description || "",
+        thumbnail_url_c: editingCourse.thumbnail_url_c || editingCourse.thumbnailUrl || "",
+        allowed_roles_c: editingCourse.allowed_roles_c || editingCourse.allowedRoles || ["free"],
+        is_pinned_c: editingCourse.is_pinned_c || editingCourse.isPinned || false,
         curriculum: editingCourse.curriculum || [{ title: "", url: "" }]
       })
     } else {
-      setFormData({
-        title: "",
-        description: "",
-        thumbnailUrl: "",
-        allowedRoles: ["free"],
-        isPinned: false,
+setFormData({
+        title_c: "",
+        description_c: "",
+        thumbnail_url_c: "",
+        allowed_roles_c: ["free"],
+        is_pinned_c: false,
         curriculum: [{ title: "", url: "" }]
       })
     }
@@ -46,10 +46,15 @@ const CourseUploadModal = ({ isOpen, onClose, courseType, editingCourse = null }
     setLoading(true)
 
     try {
-      const courseData = {
-        ...formData,
-        type: courseType,
-        thumbnailUrl: formData.thumbnailUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+const courseData = {
+        Name: formData.title_c,
+        title_c: formData.title_c,
+        description_c: formData.description_c,
+        thumbnail_url_c: formData.thumbnail_url_c || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+        type_c: courseType,
+        allowed_roles_c: formData.allowed_roles_c,
+        is_pinned_c: formData.is_pinned_c,
+        curriculum: formData.curriculum
       }
 
       if (editingCourse) {
@@ -58,27 +63,31 @@ const CourseUploadModal = ({ isOpen, onClose, courseType, editingCourse = null }
       } else {
         await coursesService.create(courseData)
         toast.success("강의가 등록되었습니다")
-      }
+}
       
       onClose()
-      window.location.reload() // Refresh to show changes
     } catch (error) {
-      toast.error("오류가 발생했습니다")
+      console.error("강의 업로드 오류:", error)
+      if (error.message) {
+        toast.error(`강의 등록 실패: ${error.message}`)
+      } else {
+        toast.error("강의 등록 중 오류가 발생했습니다")
+      }
     } finally {
       setLoading(false)
     }
   }
 
-  const handleRoleChange = (role, checked) => {
+const handleRoleChange = (role, checked) => {
     if (checked) {
       setFormData(prev => ({
         ...prev,
-        allowedRoles: [...prev.allowedRoles, role]
+        allowed_roles_c: [...prev.allowed_roles_c, role]
       }))
     } else {
-      setFormData(prev => ({
+setFormData(prev => ({
         ...prev,
-        allowedRoles: prev.allowedRoles.filter(r => r !== role)
+        allowed_roles_c: prev.allowed_roles_c.filter(r => r !== role)
       }))
     }
   }
@@ -136,27 +145,27 @@ const CourseUploadModal = ({ isOpen, onClose, courseType, editingCourse = null }
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <Input
+<Input
                 label="강의 제목"
-                value={formData.title}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                value={formData.title_c}
+                onChange={(e) => setFormData(prev => ({ ...prev, title_c: e.target.value }))}
                 required
                 placeholder="강의 제목을 입력하세요"
               />
 
-              <Textarea
+<Textarea
                 label="강의 설명"
-                value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                value={formData.description_c}
+                onChange={(e) => setFormData(prev => ({ ...prev, description_c: e.target.value }))}
                 required
                 placeholder="강의에 대한 설명을 입력하세요"
                 rows={4}
               />
 
-              <Input
+<Input
                 label="썸네일 이미지 URL (선택사항)"
-                value={formData.thumbnailUrl}
-                onChange={(e) => setFormData(prev => ({ ...prev, thumbnailUrl: e.target.value }))}
+                value={formData.thumbnail_url_c}
+                onChange={(e) => setFormData(prev => ({ ...prev, thumbnail_url_c: e.target.value }))}
                 placeholder="https://example.com/image.jpg"
               />
 
@@ -169,8 +178,8 @@ const CourseUploadModal = ({ isOpen, onClose, courseType, editingCourse = null }
                   {["free", "member", "master", "both"].map((role) => (
                     <Checkbox
                       key={role}
-                      label={role}
-                      checked={formData.allowedRoles.includes(role)}
+label={role}
+                      checked={formData.allowed_roles_c.includes(role)}
                       onChange={(e) => handleRoleChange(role, e.target.checked)}
                     />
                   ))}
@@ -178,10 +187,10 @@ const CourseUploadModal = ({ isOpen, onClose, courseType, editingCourse = null }
               </div>
 
               {/* Pin Option */}
-              <Checkbox
+<Checkbox
                 label="상단 고정"
-                checked={formData.isPinned}
-                onChange={(e) => setFormData(prev => ({ ...prev, isPinned: e.target.checked }))}
+                checked={formData.is_pinned_c}
+                onChange={(e) => setFormData(prev => ({ ...prev, is_pinned_c: e.target.checked }))}
               />
 
               {/* Curriculum */}

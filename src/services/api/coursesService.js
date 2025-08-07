@@ -101,7 +101,7 @@ const coursesService = {
     }
   },
 
-  async create(courseData) {
+async create(courseData) {
     try {
       const { ApperClient } = window.ApperSDK
       const apperClient = new ApperClient({
@@ -112,14 +112,14 @@ const coursesService = {
       const params = {
         records: [
           {
-            Name: courseData.Name || courseData.title_c || courseData.title,
-            title_c: courseData.title_c || courseData.title,
-            description_c: courseData.description_c || courseData.description,
-            thumbnail_url_c: courseData.thumbnail_url_c || courseData.thumbnailUrl,
-            type_c: courseData.type_c || courseData.type,
-            allowed_roles_c: Array.isArray(courseData.allowed_roles_c) ? courseData.allowed_roles_c.join(',') : (courseData.allowedRoles ? courseData.allowedRoles.join(',') : 'free'),
-            is_pinned_c: courseData.is_pinned_c || courseData.isPinned || false,
-            created_at_c: courseData.created_at_c || new Date().toISOString(),
+            Name: courseData.Name || courseData.title_c,
+            title_c: courseData.title_c,
+            description_c: courseData.description_c,
+            thumbnail_url_c: courseData.thumbnail_url_c,
+            type_c: courseData.type_c,
+            allowed_roles_c: Array.isArray(courseData.allowed_roles_c) ? courseData.allowed_roles_c.join(',') : 'free',
+            is_pinned_c: courseData.is_pinned_c || false,
+            created_at_c: new Date().toISOString(),
             Tags: courseData.Tags || ""
           }
         ]
@@ -136,8 +136,17 @@ const coursesService = {
         const successfulRecords = response.results.filter(result => result.success)
         const failedRecords = response.results.filter(result => !result.success)
         
-        if (failedRecords.length > 0) {
+if (failedRecords.length > 0) {
           console.error(`Failed to create courses ${failedRecords.length} records:${JSON.stringify(failedRecords)}`)
+          
+          // Show specific error messages
+          failedRecords.forEach(record => {
+            if (record.errors) {
+              record.errors.forEach(error => {
+                console.error(`Field error - ${error.fieldLabel}: ${error.message}`)
+              })
+            }
+          })
         }
         
         if (successfulRecords.length > 0) {
@@ -159,13 +168,16 @@ const coursesService = {
       }
       
       return null
-    } catch (error) {
+} catch (error) {
+      console.error("Error creating course:", error)
       if (error?.response?.data?.message) {
-        console.error("Error creating course:", error?.response?.data?.message)
+        console.error("API Error:", error.response.data.message)
+        throw new Error(error.response.data.message)
+      } else if (error.message) {
+        throw new Error(error.message)
       } else {
-        console.error(error.message)
+        throw new Error("강의 생성 중 알 수 없는 오류가 발생했습니다")
       }
-      throw error
     }
   },
 
@@ -223,8 +235,17 @@ const coursesService = {
         const successfulRecords = response.results.filter(result => result.success)
         const failedRecords = response.results.filter(result => !result.success)
         
-        if (failedRecords.length > 0) {
+if (failedRecords.length > 0) {
           console.error(`Failed to update courses ${failedRecords.length} records:${JSON.stringify(failedRecords)}`)
+          
+          // Show specific error messages
+          failedRecords.forEach(record => {
+            if (record.errors) {
+              record.errors.forEach(error => {
+                console.error(`Field error - ${error.fieldLabel}: ${error.message}`)
+              })
+            }
+          })
         }
         
         if (successfulRecords.length > 0) {
@@ -253,13 +274,16 @@ const coursesService = {
       }
       
       return null
-    } catch (error) {
+} catch (error) {
+      console.error("Error updating course:", error)
       if (error?.response?.data?.message) {
-        console.error("Error updating course:", error?.response?.data?.message)
+        console.error("API Error:", error.response.data.message)
+        throw new Error(error.response.data.message)
+      } else if (error.message) {
+        throw new Error(error.message)
       } else {
-        console.error(error.message)
+        throw new Error("강의 수정 중 알 수 없는 오류가 발생했습니다")
       }
-      throw error
     }
   },
 
