@@ -1,24 +1,21 @@
-import { useState } from "react"
-import { Link, useLocation } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
-import ApperIcon from "@/components/ApperIcon"
-import Button from "@/components/atoms/Button"
+import React, { useContext, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
+import { AuthContext } from "@/App";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 
 const Header = () => {
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false)
-  const [currentUser, setCurrentUser] = useState(null) // null for not logged in
-
-  // Mock login function
-  const handleLogin = () => {
-    setCurrentUser({ role: "admin", name: "관리자" }) // Mock admin login
-    setIsLoginModalOpen(false)
-  }
+const { logout } = useContext(AuthContext) || {}
+  const { user, isAuthenticated } = useSelector((state) => state.user)
 
   const handleLogout = () => {
-    setCurrentUser(null)
+    logout()
   }
 
   const navItems = [
@@ -72,9 +69,9 @@ const Header = () => {
 
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center space-x-3">
-              {currentUser ? (
+{isAuthenticated && user ? (
                 <div className="flex items-center space-x-3">
-                  {currentUser.role === "admin" && (
+                  {user.accounts?.[0]?.role === "admin" && (
                     <Link
                       to="/admin"
                       className="text-accent-600 hover:text-accent-700 font-medium text-sm"
@@ -83,7 +80,7 @@ const Header = () => {
                     </Link>
                   )}
                   <span className="text-sm text-gray-700">
-                    {currentUser.name}님
+                    {user.firstName || user.emailAddress}님
                   </span>
                   <Button
                     variant="ghost"
@@ -92,23 +89,25 @@ const Header = () => {
                   >
                     로그아웃
                   </Button>
-                </div>
+</div>
               ) : (
                 <>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsLoginModalOpen(true)}
-                  >
-                    로그인
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => setIsSignupModalOpen(true)}
-                  >
-                    회원가입
-                  </Button>
+                  <Link to="/login">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                    >
+                      로그인
+                    </Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                    >
+                      회원가입
+                    </Button>
+                  </Link>
                 </>
               )}
             </div>
@@ -150,9 +149,9 @@ const Header = () => {
                 ))}
                 
                 <div className="pt-4 border-t border-gray-200 space-y-2">
-                  {currentUser ? (
+{isAuthenticated && user ? (
                     <>
-                      {currentUser.role === "admin" && (
+{user.accounts?.[0]?.role === "admin" && (
                         <Link
                           to="/admin"
                           className="block px-4 py-3 rounded-lg text-sm font-medium text-accent-600 hover:bg-accent-50"
@@ -161,8 +160,8 @@ const Header = () => {
                           관리자
                         </Link>
                       )}
-                      <div className="px-4 py-2 text-sm text-gray-700">
-                        {currentUser.name}님
+<div className="px-4 py-2 text-sm text-gray-700">
+                        {user.firstName || user.emailAddress}님
                       </div>
                       <button
                         onClick={() => {
@@ -175,25 +174,21 @@ const Header = () => {
                       </button>
                     </>
                   ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          setIsLoginModalOpen(true)
-                          setIsMobileMenuOpen(false)
-                        }}
-                        className="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50"
+<>
+                      <Link
+                        to="/login"
+                        className="block px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50"
+                        onClick={() => setIsMobileMenuOpen(false)}
                       >
                         로그인
-                      </button>
-                      <button
-                        onClick={() => {
-                          setIsSignupModalOpen(true)
-                          setIsMobileMenuOpen(false)
-                        }}
-                        className="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-primary-600 hover:bg-primary-50"
+                      </Link>
+                      <Link
+                        to="/signup"
+                        className="block px-4 py-3 rounded-lg text-sm font-medium text-primary-600 hover:bg-primary-50"
+                        onClick={() => setIsMobileMenuOpen(false)}
                       >
                         회원가입
-                      </button>
+                      </Link>
                     </>
                   )}
                 </div>
@@ -252,7 +247,7 @@ const Header = () => {
                 <Button
                   variant="primary"
                   className="w-full"
-                  onClick={handleLogin}
+onClick={() => setIsLoginModalOpen(false)}
                 >
                   로그인
                 </Button>

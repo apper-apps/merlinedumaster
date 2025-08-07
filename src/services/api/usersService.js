@@ -1,64 +1,220 @@
-import mockUsers from "@/services/mockData/users.json"
-
-const users = [...mockUsers]
-
 const usersService = {
   async getAll() {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    return [...users]
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+      
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "email_c" } },
+          { field: { Name: "role_c" } },
+          { field: { Name: "created_at_c" } },
+          { field: { Name: "Tags" } }
+        ]
+      }
+      
+      const response = await apperClient.fetchRecords('user_c', params)
+      
+      if (!response.success) {
+        console.error(response.message)
+        throw new Error(response.message)
+      }
+      
+      return response.data || []
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching users:", error?.response?.data?.message)
+      } else {
+        console.error(error.message)
+      }
+      throw error
+    }
   },
 
   async getById(id) {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    const user = users.find(u => u.Id === parseInt(id))
-    if (!user) {
-      throw new Error("User not found")
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+      
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "email_c" } },
+          { field: { Name: "role_c" } },
+          { field: { Name: "created_at_c" } },
+          { field: { Name: "Tags" } }
+        ]
+      }
+      
+      const response = await apperClient.getRecordById('user_c', parseInt(id), params)
+      
+      if (!response.success) {
+        console.error(response.message)
+        throw new Error(response.message)
+      }
+      
+      return response.data
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error(`Error fetching user with ID ${id}:`, error?.response?.data?.message)
+      } else {
+        console.error(error.message)
+      }
+      throw error
     }
-    return { ...user }
   },
 
   async create(userData) {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    
-    const maxId = Math.max(...users.map(u => u.Id), 0)
-    const newUser = {
-      ...userData,
-      Id: maxId + 1,
-      createdAt: new Date().toISOString(),
-      role: userData.role || "free"
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+      
+      const params = {
+        records: [
+          {
+            Name: userData.Name || userData.name || userData.email_c || userData.email,
+            email_c: userData.email_c || userData.email,
+            role_c: userData.role_c || userData.role || "free",
+            created_at_c: userData.created_at_c || new Date().toISOString(),
+            Tags: userData.Tags || ""
+          }
+        ]
+      }
+      
+      const response = await apperClient.createRecord('user_c', params)
+      
+      if (!response.success) {
+        console.error(response.message)
+        throw new Error(response.message)
+      }
+      
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success)
+        const failedRecords = response.results.filter(result => !result.success)
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create users ${failedRecords.length} records:${JSON.stringify(failedRecords)}`)
+        }
+        
+        return successfulRecords.length > 0 ? successfulRecords[0].data : null
+      }
+      
+      return null
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error creating user:", error?.response?.data?.message)
+      } else {
+        console.error(error.message)
+      }
+      throw error
     }
-    
-    users.push(newUser)
-    return { ...newUser }
   },
 
   async update(id, userData) {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    
-    const index = users.findIndex(u => u.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("User not found")
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+      
+      const updateData = {
+        Id: parseInt(id)
+      }
+      
+      // Only include Updateable fields
+      if (userData.Name !== undefined) updateData.Name = userData.Name
+      if (userData.email_c !== undefined) updateData.email_c = userData.email_c
+      if (userData.role_c !== undefined) updateData.role_c = userData.role_c
+      if (userData.created_at_c !== undefined) updateData.created_at_c = userData.created_at_c
+      if (userData.Tags !== undefined) updateData.Tags = userData.Tags
+      
+      // Handle legacy field names
+      if (userData.email !== undefined) updateData.email_c = userData.email
+      if (userData.role !== undefined) updateData.role_c = userData.role
+      
+      const params = {
+        records: [updateData]
+      }
+      
+      const response = await apperClient.updateRecord('user_c', params)
+      
+      if (!response.success) {
+        console.error(response.message)
+        throw new Error(response.message)
+      }
+      
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success)
+        const failedRecords = response.results.filter(result => !result.success)
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to update users ${failedRecords.length} records:${JSON.stringify(failedRecords)}`)
+        }
+        
+        return successfulRecords.length > 0 ? successfulRecords[0].data : null
+      }
+      
+      return null
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error updating user:", error?.response?.data?.message)
+      } else {
+        console.error(error.message)
+      }
+      throw error
     }
-    
-    users[index] = {
-      ...users[index],
-      ...userData,
-      updatedAt: new Date().toISOString()
-    }
-    
-    return { ...users[index] }
   },
 
   async delete(id) {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    
-    const index = users.findIndex(u => u.Id === parseInt(id))
-    if (index === -1) {
-      throw new Error("User not found")
+    try {
+      const { ApperClient } = window.ApperSDK
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+      
+      const params = {
+        RecordIds: [parseInt(id)]
+      }
+      
+      const response = await apperClient.deleteRecord('user_c', params)
+      
+      if (!response.success) {
+        console.error(response.message)
+        throw new Error(response.message)
+      }
+      
+      if (response.results) {
+        const successfulDeletions = response.results.filter(result => result.success)
+        const failedDeletions = response.results.filter(result => !result.success)
+        
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete users ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`)
+        }
+        
+        return successfulDeletions.length > 0
+      }
+      
+      return false
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error deleting user:", error?.response?.data?.message)
+      } else {
+        console.error(error.message)
+      }
+      throw error
     }
-    
-    const deleted = users.splice(index, 1)[0]
-    return { ...deleted }
   }
 }
 
