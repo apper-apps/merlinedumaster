@@ -71,7 +71,7 @@ const { logout } = useContext(AuthContext) || {}
             <div className="hidden md:flex items-center space-x-3">
 {isAuthenticated && user ? (
                 <div className="flex items-center space-x-3">
-                  {user.accounts?.[0]?.role === "admin" && (
+                  {user.role_c === "admin" && (
                     <Link
                       to="/admin"
                       className="text-accent-600 hover:text-accent-700 font-medium text-sm"
@@ -150,8 +150,8 @@ const { logout } = useContext(AuthContext) || {}
                 
                 <div className="pt-4 border-t border-gray-200 space-y-2">
 {isAuthenticated && user ? (
-                    <>
-{user.accounts?.[0]?.role === "admin" && (
+<>
+{user.role_c === "admin" && (
                         <Link
                           to="/admin"
                           className="block px-4 py-3 rounded-lg text-sm font-medium text-accent-600 hover:bg-accent-50"

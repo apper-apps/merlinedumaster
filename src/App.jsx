@@ -10,6 +10,8 @@ import ErrorPage from '@/components/pages/ErrorPage'
 import ResetPassword from '@/components/pages/ResetPassword'
 import PromptPassword from '@/components/pages/PromptPassword'
 import Layout from "@/components/organisms/Layout"
+import AdminLayout from "@/components/organisms/AdminLayout"
+import ProtectedAdminRoute from "@/components/organisms/ProtectedAdminRoute"
 import HomePage from "@/components/pages/HomePage"
 import MembershipPage from "@/components/pages/MembershipPage"
 import MasterPage from "@/components/pages/MasterPage"
@@ -154,8 +156,12 @@ function App() {
                 <Route path="/insights" element={<InsightsPage />} />
                 <Route path="/testimonials" element={<TestimonialsPage />} />
                 <Route path="/video/:courseId/:videoId" element={<VideoPlayerPage />} />
-                <Route path="/blog/:postId" element={<BlogPostPage />} />
-                <Route path="/admin" element={<AdminDashboard />} />
+<Route path="/blog/:postId" element={<BlogPostPage />} />
+                <Route path="/admin/*" element={
+                  <ProtectedAdminRoute>
+                    <AdminLayout />
+                  </ProtectedAdminRoute>
+                } />
               </Routes>
             </Layout>
           } />

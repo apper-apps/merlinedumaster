@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { toast } from "react-toastify"
-import ApperIcon from "@/components/ApperIcon"
-import Button from "@/components/atoms/Button"
-import Badge from "@/components/atoms/Badge"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import usersService from "@/services/api/usersService"
-import coursesService from "@/services/api/coursesService"
-import blogsService from "@/services/api/blogsService"
-import testimonialsService from "@/services/api/testimonialsService"
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import usersService from "@/services/api/usersService";
+import testimonialsService from "@/services/api/testimonialsService";
+import coursesService from "@/services/api/coursesService";
+import blogsService from "@/services/api/blogsService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import Error from "@/components/ui/Error";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([])
@@ -18,9 +18,8 @@ const AdminDashboard = () => {
   const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [activeTab, setActiveTab] = useState("overview")
   const [editingUser, setEditingUser] = useState(null)
-
+  const [activeTab, setActiveTab] = useState("overview")
   const loadData = async () => {
     try {
       setError("")
@@ -108,7 +107,7 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div className="p-6">
         <div className="mb-8">
           <div className="h-8 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-48 mb-4 animate-pulse"></div>
           <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-96 animate-pulse"></div>
@@ -127,7 +126,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div className="p-6">
       {/* Header */}
       <motion.div
         className="mb-8"

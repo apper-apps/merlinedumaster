@@ -9,9 +9,14 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action) => {
+setUser: (state, action) => {
       // CRITICAL: Always use deep cloning to avoid reference issues
-      state.user = JSON.parse(JSON.stringify(action.payload))
+      const userData = JSON.parse(JSON.stringify(action.payload))
+      // Extract role from the user data structure
+      if (userData && userData.accounts && userData.accounts[0]) {
+        userData.role_c = userData.accounts[0].role || 'user'
+      }
+      state.user = userData
       state.isAuthenticated = !!action.payload
     },
     clearUser: (state) => {
