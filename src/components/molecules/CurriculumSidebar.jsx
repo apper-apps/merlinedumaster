@@ -28,10 +28,10 @@ const CurriculumSidebar = ({ course, isOpen, onToggle }) => {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <motion.div
+<motion.div
         className={`
-          fixed lg:static top-0 right-0 h-full bg-white shadow-xl z-50 lg:z-0
-          w-80 lg:w-96 flex flex-col
+          fixed lg:static top-0 right-0 h-full bg-white shadow-xl z-50 lg:z-0 lg:shadow-lg lg:rounded-xl
+          w-80 lg:w-full flex flex-col
           transform lg:transform-none
           ${isOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"}
         `}

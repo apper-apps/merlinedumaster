@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { motion } from "framer-motion"
-import { toast } from "react-toastify"
-import ApperIcon from "@/components/ApperIcon"
-import Button from "@/components/atoms/Button"
-import CurriculumSidebar from "@/components/molecules/CurriculumSidebar"
-import CourseUploadModal from "@/components/organisms/CourseUploadModal"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import coursesService from "@/services/api/coursesService"
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import coursesService from "@/services/api/coursesService";
+import ApperIcon from "@/components/ApperIcon";
+import CurriculumSidebar from "@/components/molecules/CurriculumSidebar";
+import CourseUploadModal from "@/components/organisms/CourseUploadModal";
+import Loading from "@/components/ui/Loading";
+import Error from "@/components/ui/Error";
+import Button from "@/components/atoms/Button";
 
 const VideoPlayerPage = () => {
   const { courseId, videoId } = useParams()
@@ -77,17 +77,32 @@ const VideoPlayerPage = () => {
     loadCourse() // Refresh course data
   }
 
-  if (loading) {
+if (loading) {
     return (
-      <div className="flex h-screen">
-        <div className="flex-1 p-6">
-          <Loading type="video" />
-        </div>
-        <div className="w-96 bg-gray-50 p-6">
-          <div className="space-y-4">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="animate-pulse bg-gray-200 h-16 rounded-lg"></div>
-            ))}
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="mb-8">
+            <div className="h-8 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-48 mb-4 animate-pulse"></div>
+            <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-96 animate-pulse"></div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">
+            <div className="lg:col-span-7">
+              <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <div className="aspect-video bg-gray-200 rounded-lg animate-pulse mb-6"></div>
+                <div className="h-6 bg-gray-200 rounded w-3/4 mb-4 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded w-full mb-2 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded w-2/3 animate-pulse"></div>
+              </div>
+            </div>
+            <div className="lg:col-span-3">
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <div className="space-y-4">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="animate-pulse bg-gray-200 h-16 rounded-lg"></div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -96,26 +111,43 @@ const VideoPlayerPage = () => {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Error message={error} onRetry={loadCourse} />
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <Error message={error} onRetry={loadCourse} />
+        </div>
       </div>
     )
   }
 
   if (!course || !currentVideo) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Error message="강의를 찾을 수 없습니다." onRetry={() => navigate("/")} />
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <Error message="강의를 찾을 수 없습니다." onRetry={() => navigate("/")} />
+        </div>
       </div>
     )
   }
-
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+<div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {course.title}
+          </h1>
+          <p className="text-gray-600">
+            {course.description || "전문 강의로 실력을 한 단계 업그레이드하세요"}
+          </p>
+        </motion.div>
+
         {/* Mobile Header */}
-        <div className="lg:hidden bg-white border-b border-gray-200 p-4">
+        <div className="lg:hidden bg-white border border-gray-200 rounded-xl p-4 mb-8">
           <div className="flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
@@ -123,9 +155,9 @@ const VideoPlayerPage = () => {
             >
               <ApperIcon name="ArrowLeft" className="w-5 h-5" />
             </button>
-            <h1 className="font-semibold text-gray-900 truncate mx-4">
+            <h2 className="font-semibold text-gray-900 truncate mx-4">
               {currentVideo.title}
-            </h1>
+            </h2>
             <button
               onClick={() => setSidebarOpen(true)}
               className="text-gray-600 hover:text-gray-900 transition-colors"
@@ -135,84 +167,86 @@ const VideoPlayerPage = () => {
           </div>
         </div>
 
-        {/* Video Player */}
-<div className="flex-1 p-6">
-          <motion.div
-            className="max-w-7xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Video Container */}
-            <div className="bg-black rounded-xl overflow-hidden shadow-2xl mb-8">
-              <div className="aspect-video">
-                {getVideoEmbedUrl(currentVideo.url) ? (
-                  <iframe
-                    src={getVideoEmbedUrl(currentVideo.url)}
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title={currentVideo.title}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-white">
-                    <div className="text-center">
-                      <ApperIcon name="PlayCircle" className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                      <p className="text-lg">동영상을 불러올 수 없습니다</p>
-                    </div>
-                  </div>
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">
+          {/* Left Column - Video & Content (70%) */}
+          <div className="lg:col-span-7">
+            {/* Video Player */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg p-8 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="relative">
+                {canEdit && (
+                  <button
+                    onClick={() => setIsEditModalOpen(true)}
+                    className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white text-gray-700 px-3 py-2 rounded-lg transition-all duration-200 shadow-lg"
+                  >
+                    <ApperIcon name="Edit" className="w-4 h-4 mr-2" />
+                    수정
+                  </button>
                 )}
-              </div>
-            </div>
-
-            {/* Video Info */}
-            <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                    {currentVideo.title}
-                  </h1>
-                  <div className="flex items-center text-sm text-gray-500 space-x-4">
-                    <span className="flex items-center">
-                      <ApperIcon name="PlayCircle" className="w-4 h-4 mr-1" />
-                      강의 {course.curriculum?.findIndex(v => v.Id === currentVideo.Id) + 1}
-                      /{course.curriculum?.length}
-                    </span>
-                    {currentVideo.duration && (
-                      <span className="flex items-center">
-                        <ApperIcon name="Clock" className="w-4 h-4 mr-1" />
-                        {Math.floor(currentVideo.duration / 60)}:{(currentVideo.duration % 60).toString().padStart(2, "0")}
-                      </span>
+                
+                <div className="relative bg-black rounded-xl overflow-hidden">
+                  <div className="aspect-video w-full">
+                    {currentVideo.youtubeUrl || currentVideo.videoUrl ? (
+                      <iframe
+                        src={getVideoEmbedUrl(currentVideo.youtubeUrl || currentVideo.videoUrl)}
+                        className="w-full h-full"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title={currentVideo.title}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+                        <div className="text-center text-white">
+                          <ApperIcon name="Play" className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                          <p className="text-lg opacity-75">동영상 준비 중</p>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
-                
-                {canEdit && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    icon="Edit3"
-                    onClick={() => setIsEditModalOpen(true)}
-                  >
-                    수정
-                  </Button>
+              </div>
+            </motion.div>
+
+            {/* Course Info */}
+            <motion.div
+              className="bg-white rounded-xl shadow-lg p-8 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{currentVideo.title}</h2>
+                {currentVideo.duration && (
+                  <div className="flex items-center text-sm text-gray-500 mb-4">
+                    <ApperIcon name="Clock" className="w-4 h-4 mr-1" />
+                    {currentVideo.duration}분
+                  </div>
                 )}
               </div>
+              
+              {currentVideo.description && (
+                <div className="border-t border-gray-200 pt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">강의 소개</h3>
+                  <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                    {currentVideo.description}
+                  </div>
+                </div>
+              )}
+            </motion.div>
 
-              {/* Course Description */}
-              <div className="border-t border-gray-200 pt-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-3">
-                  강의 소개
-                </h2>
-                <p className="text-gray-600 leading-relaxed">
-                  {course.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Navigation */}
-            <div className="hidden lg:flex items-center justify-between">
+            {/* Navigation Buttons - Desktop Only */}
+            <motion.div
+              className="hidden lg:flex items-center justify-between"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               <Button
                 variant="outline"
                 icon="ArrowLeft"
@@ -257,69 +291,47 @@ const VideoPlayerPage = () => {
                   return null
                 })}
               </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
 
-        {/* Mobile Curriculum (shown at bottom on mobile) */}
-        <div className="lg:hidden bg-white border-t border-gray-200 p-4">
-          <h3 className="font-semibold text-gray-900 mb-4">커리큘럼</h3>
-          <div className="space-y-3 max-h-60 overflow-y-auto">
-            {course.curriculum?.map((video, index) => (
-              <button
-                key={video.Id}
-                onClick={() => navigate(`/video/${courseId}/${video.Id}`)}
-                className={`
-                  w-full text-left p-3 rounded-lg transition-all duration-200
-                  ${parseInt(videoId) === video.Id
-                    ? "bg-primary-50 border-l-4 border-primary-500"
-                    : "bg-gray-50 hover:bg-gray-100"
-                  }
-                `}
-              >
-                <div className="flex items-center">
-                  <div className={`
-                    w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium mr-3
-                    ${parseInt(videoId) === video.Id
-                      ? "bg-primary-500 text-white"
-                      : "bg-gray-300 text-gray-600"
-                    }
-                  `}>
-                    {index + 1}
-                  </div>
-                  <span className={`font-medium text-sm ${
-                    parseInt(videoId) === video.Id ? "text-primary-700" : "text-gray-900"
-                  }`}>
-                    {video.title}
-                  </span>
-                </div>
-              </button>
-            ))}
+          {/* Right Column - Curriculum (30%) */}
+          <div className="lg:col-span-3 hidden lg:block">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <CurriculumSidebar
+                course={course}
+                isOpen={true}
+                onToggle={() => {}}
+              />
+            </motion.div>
           </div>
         </div>
+
+        {/* Mobile Curriculum */}
+        <div className="lg:hidden mt-8">
+          <CurriculumSidebar
+            course={course}
+            isOpen={true}
+            onToggle={() => {}}
+          />
+        </div>
       </div>
 
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block">
-        <CurriculumSidebar
-          course={course}
-          isOpen={true}
-          onToggle={() => {}}
-        />
-      </div>
-
-      {/* Mobile Sidebar */}
+      {/* Mobile Curriculum Overlay */}
       <CurriculumSidebar
         course={course}
         isOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        onToggle={() => setSidebarOpen(false)}
       />
 
-      {/* Edit Modal */}
+      {/* Course Edit Modal */}
       <CourseUploadModal
         isOpen={isEditModalOpen}
         onClose={handleEditModalClose}
-        courseType={course.type}
+        courseType={course?.type || "membership"}
         editingCourse={course}
       />
     </div>
