@@ -8,10 +8,12 @@ const usersService = {
       })
       
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "email_c" } },
           { field: { Name: "role_c" } },
+          { field: { Name: "grade_c" } },
+          { field: { Name: "is_active_c" } },
           { field: { Name: "created_at_c" } },
           { field: { Name: "Tags" } }
         ]
@@ -43,11 +45,13 @@ const usersService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       })
       
-      const params = {
+const params = {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "email_c" } },
           { field: { Name: "role_c" } },
+          { field: { Name: "grade_c" } },
+          { field: { Name: "is_active_c" } },
           { field: { Name: "created_at_c" } },
           { field: { Name: "Tags" } }
         ]
@@ -80,11 +84,13 @@ const usersService = {
       })
       
       const params = {
-        records: [
+records: [
           {
             Name: userData.Name || userData.name || userData.email_c || userData.email,
             email_c: userData.email_c || userData.email,
             role_c: userData.role_c || userData.role || "free",
+            grade_c: userData.grade_c || userData.grade || "basic",
+            is_active_c: userData.is_active_c !== undefined ? userData.is_active_c : true,
             created_at_c: userData.created_at_c || new Date().toISOString(),
             Tags: userData.Tags || ""
           }
@@ -132,17 +138,19 @@ const usersService = {
         Id: parseInt(id)
       }
       
-      // Only include Updateable fields
+// Only include Updateable fields
       if (userData.Name !== undefined) updateData.Name = userData.Name
       if (userData.email_c !== undefined) updateData.email_c = userData.email_c
       if (userData.role_c !== undefined) updateData.role_c = userData.role_c
+      if (userData.grade_c !== undefined) updateData.grade_c = userData.grade_c
+      if (userData.is_active_c !== undefined) updateData.is_active_c = userData.is_active_c
       if (userData.created_at_c !== undefined) updateData.created_at_c = userData.created_at_c
       if (userData.Tags !== undefined) updateData.Tags = userData.Tags
       
       // Handle legacy field names
       if (userData.email !== undefined) updateData.email_c = userData.email
       if (userData.role !== undefined) updateData.role_c = userData.role
-      
+      if (userData.grade !== undefined) updateData.grade_c = userData.grade
       const params = {
         records: [updateData]
       }
