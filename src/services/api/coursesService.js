@@ -25,9 +25,10 @@ const coursesService = {
       
       const response = await apperClient.fetchRecords('course_c', params)
       
-      if (!response.success) {
+if (!response.success) {
         console.error(response.message)
-        throw new Error(response.message)
+        // Return empty array instead of throwing to allow graceful UI handling
+        return []
       }
       
       // Get curriculum for each course
@@ -44,16 +45,16 @@ const coursesService = {
       )
       
       return coursesWithCurriculum
-    } catch (error) {
+} catch (error) {
       if (error?.response?.data?.message) {
         console.error("Error fetching courses:", error?.response?.data?.message)
       } else {
-        console.error(error.message)
+        console.error("Error fetching courses:", error.message)
       }
-      throw error
+      // Return empty array instead of throwing to allow graceful UI handling
+      return []
     }
   },
-
   async getById(id) {
     try {
       const { ApperClient } = window.ApperSDK
@@ -78,9 +79,10 @@ const coursesService = {
       
       const response = await apperClient.getRecordById('course_c', parseInt(id), params)
       
-      if (!response.success) {
+if (!response.success) {
         console.error(response.message)
-        throw new Error(response.message)
+        // Return null instead of throwing to allow graceful UI handling
+        return null
       }
       
       // Get curriculum for this course
@@ -91,16 +93,16 @@ const coursesService = {
         console.error(`Error loading curriculum for course ${id}:`, error)
         return { ...response.data, curriculum: [] }
       }
-    } catch (error) {
+} catch (error) {
       if (error?.response?.data?.message) {
         console.error(`Error fetching course with ID ${id}:`, error?.response?.data?.message)
       } else {
-        console.error(error.message)
+        console.error(`Error fetching course with ID ${id}:`, error.message)
       }
-      throw error
+      // Return null instead of throwing to allow graceful UI handling
+      return null
     }
   },
-
 async create(courseData) {
     try {
       const { ApperClient } = window.ApperSDK
@@ -324,12 +326,12 @@ if (failedRecords.length > 0) {
         return successfulDeletions.length > 0
       }
       
-      return false
+return false
     } catch (error) {
       if (error?.response?.data?.message) {
         console.error("Error deleting course:", error?.response?.data?.message)
       } else {
-        console.error(error.message)
+        console.error("Error deleting course:", error.message)
       }
       throw error
     }
