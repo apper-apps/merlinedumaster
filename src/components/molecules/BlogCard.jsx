@@ -88,9 +88,12 @@ const BlogCard = ({ post, onEdit, onDelete, canEdit = false }) => {
             ))}
           </div>
           
-          <div className="flex items-center text-sm text-gray-500">
+<div className="flex items-center text-sm text-gray-500">
             <ApperIcon name="Calendar" className="w-4 h-4 mr-1" />
-            {format(new Date(post.publishedAt), "M월 d일", { locale: ko })}
+            {post.publishedAt && !isNaN(new Date(post.publishedAt)) 
+              ? format(new Date(post.publishedAt), "M월 d일", { locale: ko })
+              : "날짜 없음"
+            }
           </div>
         </div>
       </div>
