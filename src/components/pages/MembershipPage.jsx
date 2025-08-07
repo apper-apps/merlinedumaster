@@ -26,14 +26,21 @@ const MembershipPage = () => {
       setError("")
       setLoading(true)
       
-      const data = await coursesService.getAll()
-      const membershipCourses = data.filter(course => course.type === "membership")
+const data = await coursesService.getAll()
+      // Filter courses with member or both access
+      const membershipCourses = data.filter(course => {
+        if (!course.allowed_roles_c) return false
+        const roles = Array.isArray(course.allowed_roles_c) 
+          ? course.allowed_roles_c 
+          : course.allowed_roles_c.split(',')
+        return roles.includes('member') || roles.includes('both') || roles.includes('admin')
+      })
       
       // Sort: pinned courses first, then by creation date
       const sortedCourses = membershipCourses.sort((a, b) => {
-        if (a.isPinned && !b.isPinned) return -1
-        if (!a.isPinned && b.isPinned) return 1
-        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+        if (a.is_pinned_c && !b.is_pinned_c) return -1
+        if (!a.is_pinned_c && b.is_pinned_c) return 1
+        return new Date(b.created_at_c || b.CreatedOn || 0) - new Date(a.created_at_c || a.CreatedOn || 0)
       })
       
       setCourses(sortedCourses)
@@ -136,7 +143,7 @@ const handleUploadModalClose = () => {
             <div className="ml-4">
               <p className="text-sm text-secondary-600 font-medium">고정 강의</p>
               <p className="text-2xl font-bold text-secondary-700">
-                {courses.filter(c => c.isPinned).length}개
+{courses.filter(c => c.is_pinned_c).length}개
               </p>
             </div>
           </div>

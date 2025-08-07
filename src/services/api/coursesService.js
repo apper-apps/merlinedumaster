@@ -15,7 +15,7 @@ const coursesService = {
           { field: { Name: "title_c" } },
           { field: { Name: "description_c" } },
           { field: { Name: "thumbnail_url_c" } },
-          { field: { Name: "type_c" } },
+{ field: { Name: "type_c" } },
           { field: { Name: "allowed_roles_c" } },
           { field: { Name: "is_pinned_c" } },
           { field: { Name: "created_at_c" } },
@@ -117,7 +117,7 @@ async create(courseData) {
             description_c: courseData.description_c,
             thumbnail_url_c: courseData.thumbnail_url_c,
             type_c: courseData.type_c,
-            allowed_roles_c: Array.isArray(courseData.allowed_roles_c) ? courseData.allowed_roles_c.join(',') : 'free',
+allowed_roles_c: Array.isArray(courseData.allowed_roles_c) ? courseData.allowed_roles_c.join(',') : (courseData.allowed_roles_c || 'free'),
             is_pinned_c: courseData.is_pinned_c || false,
             created_at_c: new Date().toISOString(),
             Tags: courseData.Tags || ""
@@ -155,7 +155,7 @@ if (failedRecords.length > 0) {
           // Create curriculum items if provided
           if (courseData.curriculum && courseData.curriculum.length > 0) {
             try {
-              const curriculum = await curriculumService.createMultiple(newCourse.Id, courseData.curriculum)
+const curriculum = await curriculumService.createMultiple(newCourse.Id, courseData.curriculum || [])
               return { ...newCourse, curriculum }
             } catch (error) {
               console.error(`Error creating curriculum for course ${newCourse.Id}:`, error)

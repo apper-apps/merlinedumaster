@@ -30,7 +30,7 @@ const CourseCard = ({ course, onEdit, canEdit = false }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      {course.isPinned && (
+{course.is_pinned_c && (
         <div className="bg-gradient-to-r from-accent-500 to-accent-600 text-white px-3 py-1 text-xs font-medium">
           <ApperIcon name="Pin" className="w-3 h-3 inline mr-1" />
           고정 강의
@@ -38,9 +38,9 @@ const CourseCard = ({ course, onEdit, canEdit = false }) => {
       )}
       
       <div className="relative cursor-pointer" onClick={handleClick}>
-        <img
-          src={course.thumbnailUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"}
-          alt={course.title}
+<img
+          src={course.thumbnail_url_c || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"}
+          alt={course.title_c}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
@@ -56,7 +56,7 @@ const CourseCard = ({ course, onEdit, canEdit = false }) => {
             className="text-lg font-semibold text-gray-900 line-clamp-2 cursor-pointer hover:text-primary-600 transition-colors"
             onClick={handleClick}
           >
-            {course.title}
+{course.title_c}
           </h3>
           {canEdit && (
             <button
@@ -72,18 +72,21 @@ const CourseCard = ({ course, onEdit, canEdit = false }) => {
         </div>
         
         <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {course.description}
+{course.description_c}
         </p>
         
         <div className="flex items-center justify-between">
           <div className="flex flex-wrap gap-1">
-            {course.allowedRoles?.map((role) => (
+{(Array.isArray(course.allowed_roles_c) 
+              ? course.allowed_roles_c 
+              : course.allowed_roles_c?.split(',') || []
+            ).map((role) => (
               <Badge 
                 key={role} 
-                variant={getRoleBadgeVariant(role)}
+                variant={getRoleBadgeVariant(role.trim())}
                 size="sm"
               >
-                {role}
+                {role.trim()}
               </Badge>
             ))}
           </div>

@@ -13,7 +13,7 @@ const [formData, setFormData] = useState({
     title_c: "",
     description_c: "",
     thumbnail_url_c: "",
-    allowed_roles_c: ["free"],
+    allowed_roles_c: courseType === "membership" ? ["member"] : ["master"],
     is_pinned_c: false,
     curriculum: [{ title: "", url: "" }]
   })
@@ -54,7 +54,7 @@ const courseData = {
         type_c: courseType,
         allowed_roles_c: formData.allowed_roles_c,
         is_pinned_c: formData.is_pinned_c,
-        curriculum: formData.curriculum
+        curriculum: formData.curriculum.filter(item => item.title && item.url)
       }
 
       if (editingCourse) {
@@ -64,7 +64,7 @@ const courseData = {
         await coursesService.create(courseData)
         toast.success("강의가 등록되었습니다")
 }
-      
+toast.success("강의가 성공적으로 등록되었습니다!")
       onClose()
     } catch (error) {
       console.error("강의 업로드 오류:", error)
