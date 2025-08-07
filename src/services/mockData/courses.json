@@ -1,0 +1,167 @@
+[
+  {
+    "Id": 1,
+    "title": "React 마스터 클래스",
+    "description": "실무에서 바로 사용할 수 있는 React 완벽 가이드입니다. 기초부터 고급 개념까지 단계별로 학습하며, 실제 프로젝트를 통해 실력을 향상시켜보세요.",
+    "thumbnailUrl": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "type": "membership",
+    "allowedRoles": ["member", "both", "admin"],
+    "isPinned": true,
+    "createdAt": "2024-01-15T09:00:00Z",
+    "curriculum": [
+      {
+        "Id": 1,
+        "title": "React 기초 개념 이해하기",
+        "url": "https://www.youtube.com/watch?v=Tn6-PIqc4UM",
+        "duration": 1200,
+        "order": 1
+      },
+      {
+        "Id": 2,
+        "title": "컴포넌트와 JSX 완벽 가이드",
+        "url": "https://www.youtube.com/watch?v=bMknfKXIFA8",
+        "duration": 1580,
+        "order": 2
+      },
+      {
+        "Id": 3,
+        "title": "State와 Props 활용법",
+        "url": "https://www.youtube.com/watch?v=IYvD9oBCuJI",
+        "duration": 1350,
+        "order": 3
+      },
+      {
+        "Id": 4,
+        "title": "React Hooks 완벽 정복",
+        "url": "https://www.youtube.com/watch?v=O6P86uwfdR0",
+        "duration": 1920,
+        "order": 4
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "title": "JavaScript ES6+ 심화 과정",
+    "description": "모던 JavaScript의 핵심 기능들을 깊이 있게 학습합니다. ES6+의 새로운 문법과 고급 패턴을 통해 더 나은 코드를 작성하는 방법을 배워보세요.",
+    "thumbnailUrl": "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "type": "membership",
+    "allowedRoles": ["member", "both", "admin"],
+    "isPinned": false,
+    "createdAt": "2024-01-10T14:30:00Z",
+    "curriculum": [
+      {
+        "Id": 5,
+        "title": "let, const와 블록 스코프",
+        "url": "https://www.youtube.com/watch?v=sjyJBL5fkp8",
+        "duration": 900,
+        "order": 1
+      },
+      {
+        "Id": 6,
+        "title": "화살표 함수와 this 바인딩",
+        "url": "https://www.youtube.com/watch?v=h33Srr5J9nY",
+        "duration": 1100,
+        "order": 2
+      },
+      {
+        "Id": 7,
+        "title": "구조 분해 할당 완벽 활용",
+        "url": "https://www.youtube.com/watch?v=NIq3qLaHCIs",
+        "duration": 1250,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "title": "UI/UX 디자인 마스터클래스",
+    "description": "사용자 중심의 디자인 원칙부터 실무에서 사용하는 도구까지, 완성도 높은 UI/UX 디자이너가 되기 위한 모든 것을 학습합니다.",
+    "thumbnailUrl": "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "type": "master",
+    "allowedRoles": ["master", "both", "admin"],
+    "isPinned": true,
+    "createdAt": "2024-01-08T11:00:00Z",
+    "curriculum": [
+      {
+        "Id": 8,
+        "title": "디자인 시스템의 이해",
+        "url": "https://www.youtube.com/watch?v=YaF5VO7wmlc",
+        "duration": 1800,
+        "order": 1
+      },
+      {
+        "Id": 9,
+        "title": "사용자 리서치 방법론",
+        "url": "https://www.youtube.com/watch?v=WpzmOH0hrEM",
+        "duration": 1650,
+        "order": 2
+      },
+      {
+        "Id": 10,
+        "title": "프로토타이핑과 와이어프레임",
+        "url": "https://www.youtube.com/watch?v=qAws7eXItMk",
+        "duration": 2100,
+        "order": 3
+      }
+    ]
+  },
+  {
+    "Id": 4,
+    "title": "데이터 분석과 시각화",
+    "description": "Python을 활용한 데이터 분석의 전 과정을 학습합니다. 데이터 수집부터 정제, 분석, 시각화까지 실무에 바로 적용할 수 있는 스킬을 습득해보세요.",
+    "thumbnailUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "type": "master",
+    "allowedRoles": ["master", "both", "admin"],
+    "isPinned": false,
+    "createdAt": "2024-01-05T16:15:00Z",
+    "curriculum": [
+      {
+        "Id": 11,
+        "title": "Python 데이터 분석 환경 설정",
+        "url": "https://www.youtube.com/watch?v=HW29067qVWk",
+        "duration": 1200,
+        "order": 1
+      },
+      {
+        "Id": 12,
+        "title": "Pandas를 활용한 데이터 조작",
+        "url": "https://www.youtube.com/watch?v=vmEHCJofslg",
+        "duration": 1750,
+        "order": 2
+      }
+    ]
+  },
+  {
+    "Id": 5,
+    "title": "Node.js 백엔드 개발",
+    "description": "Node.js를 활용한 서버 개발의 모든 것을 학습합니다. Express 프레임워크부터 데이터베이스 연동, API 개발까지 완벽하게 마스터해보세요.",
+    "thumbnailUrl": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "type": "membership",
+    "allowedRoles": ["member", "both", "admin"],
+    "isPinned": false,
+    "createdAt": "2024-01-03T13:20:00Z",
+    "curriculum": [
+      {
+        "Id": 13,
+        "title": "Node.js 기초와 모듈 시스템",
+        "url": "https://www.youtube.com/watch?v=TlB_eWDSMt4",
+        "duration": 1400,
+        "order": 1
+      },
+      {
+        "Id": 14,
+        "title": "Express.js 서버 구축하기",
+        "url": "https://www.youtube.com/watch?v=L72fhGm1tfE",
+        "duration": 1600,
+        "order": 2
+      },
+      {
+        "Id": 15,
+        "title": "RESTful API 설계와 구현",
+        "url": "https://www.youtube.com/watch?v=0oXYLzuucwE",
+        "duration": 1850,
+        "order": 3
+      }
+    ]
+  }
+]

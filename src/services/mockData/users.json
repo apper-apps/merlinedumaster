@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "email": "admin@edumaster.com",
+    "role": "admin",
+    "createdAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "Id": 2,
+    "email": "user1@example.com",
+    "role": "free",
+    "createdAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "Id": 3,
+    "email": "member1@example.com",
+    "role": "member",
+    "createdAt": "2024-01-16T14:20:00Z"
+  },
+  {
+    "Id": 4,
+    "email": "master1@example.com",
+    "role": "master",
+    "createdAt": "2024-01-17T09:15:00Z"
+  },
+  {
+    "Id": 5,
+    "email": "both1@example.com",
+    "role": "both",
+    "createdAt": "2024-01-18T16:45:00Z"
+  },
+  {
+    "Id": 6,
+    "email": "user2@example.com",
+    "role": "free",
+    "createdAt": "2024-01-19T11:30:00Z"
+  },
+  {
+    "Id": 7,
+    "email": "member2@example.com",
+    "role": "member",
+    "createdAt": "2024-01-20T13:25:00Z"
+  },
+  {
+    "Id": 8,
+    "email": "user3@example.com",
+    "role": "free",
+    "createdAt": "2024-01-21T08:40:00Z"
+  },
+  {
+    "Id": 9,
+    "email": "master2@example.com",
+    "role": "master",
+    "createdAt": "2024-01-22T15:10:00Z"
+  },
+  {
+    "Id": 10,
+    "email": "user4@example.com",
+    "role": "free",
+    "createdAt": "2024-01-23T12:55:00Z"
+  }
+]
